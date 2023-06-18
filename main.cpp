@@ -117,31 +117,7 @@ int main() {
 
         glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 
-        /*/------------------------------------------------------------------
-        //create our ImGui window
-        ImGui::Begin("Scene Window");
-        //get the mouse position
-        ImVec2 pos = ImGui::GetCursorScreenPos();
-
-        //pass the texture of the FBO
-        //window.getRenderTexture() is the texture of the FBO
-        //the next parameter is the upper left corner for the uvs to be applied at
-        //the third parameter is the lower right corner
-        //the last two parameters are the UVs
-        //they have to be flipped (normally they would be (0,0);(1,1) 
-        ImGui::GetWindowDrawList()->AddImage(
-            (void*)window.getRenderTexture(),
-            ImVec2(ImGui::GetCursorScreenPos()),
-            ImVec2(ImGui::GetCursorScreenPos().x + window.getWidth() / 2,
-                ImGui::GetCursorScreenPos().y + window.getHeight() / 2), ImVec2(0, 1), ImVec2(1, 0));
-
-        //we are done working with this window
-        ImGui::End();
-        //---------------------------------------------------------------------*/
-        
         game.render(shaderProgram);
-
-
 
         // Render imgui into screen
         ImGui::Render();

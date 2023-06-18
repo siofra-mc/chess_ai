@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util.h"
+#include "triangle.h"
 #include <string>
 #include <iostream>
 
@@ -19,6 +20,13 @@ struct Square {
 	glm::vec3 bottom_left;
 	glm::vec3 bottom_right;
 	glm::vec3 color;
+	Triangle top_triangle;
+	Triangle bottom_triangle;
+
+	Square(vec3s top, vec3s bot, vec3s colors) {
+		top_triangle = Triangle(top, colors);
+		bottom_triangle = Triangle(bot, colors);
+	}
 };
 
 

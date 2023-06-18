@@ -1,23 +1,22 @@
 #include "triangle.h"
 
-Triangle::Triangle(vec3s pos, vec3s norms) {
+Triangle::Triangle(vec3s pos, vec3s clrs) {
 	// We assume the triangle has 3 vertices and normals
 	assert(pos.size() == 3);
-	assert(norms.size() == 3);
+	assert(clrs.size() == 3);
 
-	// Default to identity and pink, respectively
+	// Default to identity
 	projection = glm::mat4(1);
-	color = glm::vec3(1.f, 0.f, 1.f);
 
 	// Copy vertex data into our object
 	positions = pos;
-	normals = norms;
+	colors = clrs;
 	indices = { 0, 1, 2 };
 	
 	// Generate the opengl objects
 	glGenVertexArrays(1, &vertex_array_object);
 	glGenBuffers(1, &vertex_buffer_object_positions);
-	glGenBuffers(1, &vertex_buffer_object_normals);
+	glGenBuffers(1, &vertex_buffer_object_colors);
 	glGenBuffers(1, &element_buffer_object);
 	
 	glBindVertexArray(vertex_array_object);
@@ -29,8 +28,8 @@ Triangle::Triangle(vec3s pos, vec3s norms) {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
 
 	// Designate normals
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_normals);
-	glBufferData(GL_ARRAY_BUFFER, indices.size() * sizeof(glm::vec3), normals.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_colors);
+	glBufferData(GL_ARRAY_BUFFER, indices.size() * sizeof(glm::vec3), colors.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
 
@@ -47,7 +46,7 @@ Triangle::Triangle(vec3s pos, vec3s norms) {
 Triangle::~Triangle() {
 	glDeleteVertexArrays (1, &vertex_array_object);
 	glDeleteBuffers(1, &vertex_buffer_object_positions);
-	glDeleteBuffers(1, &vertex_buffer_object_normals);
+	glDeleteBuffers(1, &vertex_buffer_object_colors);
 	glDeleteBuffers(1, &element_buffer_object);
 }
 

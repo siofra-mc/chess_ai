@@ -3,6 +3,7 @@
 #include "util.h"
 
 struct Triangle {
+	Triangle() {}
 	Triangle(vec3s, vec3s);
 	~Triangle();
 
@@ -12,11 +13,10 @@ private:
 	// Graphical Components
 	GLuint vertex_array_object;
 	GLuint vertex_buffer_object_positions;
-	GLuint vertex_buffer_object_normals;
+	GLuint vertex_buffer_object_colors;
 	GLuint element_buffer_object;	
 	glm::mat4 projection;
-	glm::vec3 color;
 	vec3s positions;
-	vec3s normals;
+	vec3s colors;
 	uints indices;
 };
