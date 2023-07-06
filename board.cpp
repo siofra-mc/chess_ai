@@ -11,8 +11,8 @@ Board::Board(unsigned int fbo) : fbo(fbo) {
 	for (int i = 0; i < 64; i++) {
 		float left = (i % 8 - 4) * .25f;
 		float right = (i % 8 - 3) * .25f;
-		float top = (i / 8 - 3) * .25f;
-		float bottom = (i / 8 - 4) * .25f;
+		float top = (i * .125f - 3) * .25f;
+		float bottom = (i * .125f - 4) * .25f;
 		
 		glm::vec3 color = ((i % 2) ^ (i / 8 % 2)) ? glm::vec3(0.1f, 0.0f, 0.0f) : glm::vec3(1.0f, 1.0f, 1.0f);
 		vec3s colors = { color, color, color };
@@ -183,6 +183,7 @@ void Board::render(unsigned int shaderProgram) {
 		glGenBuffers(1, &vertex_buffer);
 
 		std::vector<float> vertex_buffer_data;
+		std::cerr << "Printing Board...\n";
 		for (int i = 0; i < 64; i++) {
 			Square* sqr = gSquares[i];
 			sqr->top_triangle.draw(glm::mat4(1), shaderProgram);

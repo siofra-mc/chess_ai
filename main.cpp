@@ -22,7 +22,7 @@ int main() {
     // Create the GLFW window.
     GLFWwindow* window = glfwCreateWindow(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE, NULL, NULL);
     if (!window) 
-    {
+    { 
         cerr << "Failed to open GLFW window." << endl;
         glfwTerminate(); 
         exit(EXIT_FAILURE);
@@ -57,8 +57,9 @@ int main() {
         "out vec4 vertColor;\n"
         "void main()\n"
         "{\n"
-        "   gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);\n"
-        "   vertColor   = vec4(col.x, col.y, col.z, 1.0);\n"
+        "   printf(\"Fucking shit is crap!\\n\")\n"
+        "   gl_Position = vec4(pos, 1.0);\n"
+        "   vertColor   = vec4(col, 1.0);\n"
         "}\0";
 
     unsigned int vertexShader;
@@ -71,7 +72,7 @@ int main() {
         "out vec4 FragColor; \n"
         "void main()\n"
         "{\n"
-        "   FragColor = vertColor;\n"
+        "   FragColor = (1.f, 0.f, 1.f);\n"
         "}\0";
 
     unsigned int fragmentShader;
