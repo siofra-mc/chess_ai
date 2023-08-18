@@ -4,6 +4,7 @@
 #include "shader.h"
 #include <string>
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 struct Piece {
 	PieceType kind;
@@ -13,12 +14,13 @@ struct Piece {
 #define empty_sqr Piece(open, none);
 
 
-struct Square {
+class Square {
 	glm::vec3 top_left_corner;
 	bool is_dark;
 	Piece piece;
 
 public:
+	Square(glm::vec3 tlc, bool dark, Piece p) : top_left_corner(tlc), is_dark(dark), piece(p) {}
 	void draw(Shader*);
 	void drawTexture(Shader*);
 };
@@ -30,12 +32,12 @@ class Board {
 	int promoting = -1;
  	// graphical components
 	unsigned int gBoard = 0;
-	unsigned int fbo = 0;
+	sf::RenderTexture* texture;
 	Shader* colorShader = nullptr;
 	Shader* pieceShader = nullptr;
 
 public:
-	Board(GLuint); // Creates new starting board
+	Board(sf::RenderTexture*); // Creates new starting board
 	Board(Board*); // Copies board state
 	~Board();
 	bool makeMove(Piece, int, int);

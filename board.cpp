@@ -153,7 +153,7 @@ void Square::drawTexture(Shader* shader) {
 * Parameters: fbo - ID of the FrameBuffer Object that the board will be drawn onto
 * Description: Creates a new Board with the classical starting position
 \*-------------------------------------------------------------------------------------------------------------*/
-Board::Board(GLuint fbo) : fbo(fbo) {
+Board::Board(sf::RenderTexture* texture) : texture(texture) {
  	memset(&board, 0, sizeof(Piece) * 64);
 	// Pawns
 	for (int file = 0; file < 8; file++) {
@@ -195,24 +195,25 @@ Board::Board(GLuint fbo) : fbo(fbo) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 
-	unsigned int render_buffer_object;
+	/*unsigned int render_buffer_object;
 	glGenRenderbuffers(1, &render_buffer_object);
 	glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_object);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, WIN_WIDTH, WIN_HEIGHT);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
+	*/
 	// attaching render buffer 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
+	/*glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gBoard, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, render_buffer_object);
+	*/
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	/*if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Frame buffer failed.\n" << std::endl;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
-	colorShader = new Shader("../../../res/shaders/default.vert", "../../../res/shaders/default.frag");
-	pieceShader = new Shader("../../../res/shaders/piece.vert", "../../../res/shaders/piece.frag");
+	//colorShader = new Shader("../../../res/shaders/default.vert", "../../../res/shaders/default.frag");
+	//pieceShader = new Shader("../../../res/shaders/piece.vert", "../../../res/shaders/piece.frag");
 }
 
 /*-------------------------------------------------------------------------------------------------------------*\
@@ -350,7 +351,6 @@ std::string Board::printBoardString() {
 * Description Prints out the graphical representation of the board.
 \*-------------------------------------------------------------------------------------------------------------*/
 void Board::printBoardImage() {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -363,21 +363,22 @@ void Board::printBoardImage() {
 			bool isBlack = (i % 2) ^ (i / 8 % 2);
 			Piece p = board[i];
 			Square* s = new Square(top_left, isBlack, p);
-			s->draw(colorShader);
 
 			if (p.kind != open) {
-				s->drawTexture(pieceShader);
+				//s->draw(colorShader);
+				//s->drawTexture(pieceShader);
 			}
 			delete s;
 		}
 	
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		/*glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
+		*/ 
 		ImGui::Image((void*)(intptr_t)gBoard, ImGui::GetContentRegionAvail());
 	}
+	ImGui::End(); 
 }
 
 /*-------------------------------------------------------------------------------------------------------------*\
@@ -391,6 +392,6 @@ void Board::render() {
 	ImGui::Text(board_string.c_str());
 	ImGui::End();
 	
-	printBoardImage(); 
-	ImGui::End(); 
+ 
+	//printBoardImage(); 
 }

@@ -9,6 +9,8 @@
     "glew",
     "glfw3",
     "glm",
-    "stb"
+    "stb",
+    "sfml",
+    "imgui-sfml"
   ]
 }

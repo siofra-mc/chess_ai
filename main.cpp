@@ -1,10 +1,9 @@
 ﻿// chess_ai.cpp : Defines the entry point for the application.
 //
 
+#include <SFML/Graphics.hpp>
 #include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_internal.h"
+#include "imgui-SFML.h"
 #include "gl/glew.h"
 #include "GLFW/glfw3.h"
 #define STB_IMAGE_IMPLEMENTATION
@@ -14,7 +13,8 @@
 using namespace std;
 
 int main() {
-    // Initialize GLFW.
+
+ /*/ Initialize GLFW.
     if (!glfwInit())
     {
         cerr << "Failed to initialize GLFW" << endl;
@@ -41,7 +41,7 @@ int main() {
     }
     
     glfwSwapInterval(0);
-        
+      
     // ImGUI init
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -86,8 +86,40 @@ int main() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    delete defaultShader;
     glfwTerminate();
     
     return 0;
+
+    */
+
+
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Test Window");
+    ImGui::SFML::Init(window);
+    sf::CircleShape shape(200.f, 100);
+    shape.setFillColor(sf::Color(204, 77, 5)); // Color circle
+    shape.setPosition(200, 100); // Center circle
+
+    sf::RenderTexture boardTexture;
+    boardTexture.create(400, 400);
+    Game game(&boardTexture);
+
+    sf::Clock deltaClock;
+    while (window.isOpen()) {
+        sf::Event event;
+
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) window.close();
+        }
+        ImGui::SFML::Update(window, deltaClock.restart());
+
+        window.clear(sf::Color(18, 33, 43)); // Color background
+        window.draw(shape);
+        game.render();
+        ImGui::SFML::Render(window);
+        window.display();
+    }
+
+    ImGui::SFML::Shutdown();
+    return 0;
+
 }

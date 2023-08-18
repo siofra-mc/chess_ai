@@ -7,10 +7,10 @@
 * Parameters: fbo - framebuffer object that this game will be drawn onto
 * Description: Creates a new game in the starting poistion and creates a Board object for it's representation
 \*-------------------------------------------------------------------------------------------------------------*/
-Game::Game(unsigned int fbo = 0) {
-	board = new Board(fbo);
+Game::Game(sf::RenderTexture* texture) {
+	board = new Board(texture);
 	whose_turn = white;
-	white_king = 4;
+	white_king = 4; 
 	black_king = 60;
 }
 
@@ -39,7 +39,7 @@ Game::Game(Game* base) {
 
 // I don't think I need a big comment for this destructor.
 Game::~Game() {
-	delete board;
+	if (board) delete board;
 }
 
 /*-------------------------------------------------------------------------------------------------------------*\

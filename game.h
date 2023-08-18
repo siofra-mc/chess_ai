@@ -2,11 +2,12 @@
 #include "board.h"
 #include "shader.h"
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 
 class Game {
 private: 
-	Board* board = new Board(1);
+	Board* board = nullptr;
 	// Who's in check
 	bool white_check = 0;
 	bool black_check = 0;
@@ -26,11 +27,9 @@ private:
 	bool black_long_castle = 1;
 	// Are we waiting for the player to decide how to promote their pawn
 	bool wait_for_promote = 0;
-	// Framebuffer we draw our board on
-	unsigned int fbo;
 
 public:
-	Game(unsigned int);
+	Game(sf::RenderTexture*);
 	Game(Game*);
 	~Game();
 	void render();
