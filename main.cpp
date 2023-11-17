@@ -10,10 +10,34 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "game.h"
 #include "shader.h"
+#include <vector>
 
 using namespace std;
 
 
+void render(GLFWwindow* window, Game* g) {
+    glfwPollEvents();
+
+    // Starts ImGUI frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+
+    // Clear the screen and render our game
+    glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+    g->render();
+
+    // Render imgui into screen
+    ImGui::Render();
+    glClear(GL_COLOR_BUFFER_BIT);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    glfwSwapBuffers(window);
+}
+
+
+ 
 int main() {
     // Initialize GLFW.
     if (!glfwInit())
@@ -58,25 +82,9 @@ int main() {
     glGenFramebuffers(1, &frame_buffer_object);
 
     // Let's get this game going!
-    Game game(frame_buffer_object);
+    Game* game = new Game(frame_buffer_object);
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-
-        // Starts ImGUI frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        // Clear the screen and render our game
-        glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
-        game.render();
-
-        // Render imgui into screen
-        ImGui::Render();
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        glfwSwapBuffers(window);
+        render(window, game);
     }
      
     // Cleanup

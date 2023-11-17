@@ -24,6 +24,7 @@ public:
 	virtual Piece* copy(Board*) = 0;
 	virtual vec2s* legalMoves(bool = false) = 0;
 	virtual char textboardSymbol() = 0;
+	virtual PieceType getType() = 0;
 };
 
 class Knight : public Piece {
@@ -32,6 +33,7 @@ public:
 	Piece* copy(Board*) override;
 	vec2s* legalMoves(bool) override;
 	char textboardSymbol() override { return 'N'; }
+	PieceType getType() override { return knight; }
 };
 
 class Bishop : public Piece {
@@ -40,6 +42,7 @@ public:
 	vec2s* legalMoves(bool) override;
 	Piece* copy(Board*) override;
 	char textboardSymbol() override { return 'B'; }
+	PieceType getType() override { return bishop; }
 };
 
 class Rook : public Piece {
@@ -48,6 +51,7 @@ public:
 	Piece* copy(Board*) override;
 	vec2s* legalMoves(bool) override;
 	char textboardSymbol() override { return 'R'; }
+	PieceType getType() override { return rook; }
 };
 
 class Queen : public Piece {
@@ -56,6 +60,7 @@ public:
 	Piece* copy(Board*) override;
 	vec2s* legalMoves(bool) override;
 	char textboardSymbol() override { return 'Q'; }
+	PieceType getType() override { return queen; }
 };
 
 class King : public Piece {
@@ -64,6 +69,7 @@ public:
 	Piece* copy(Board*) override;
 	vec2s* legalMoves(bool) override;
 	char textboardSymbol() override { return 'K'; }
+	PieceType getType() override { return king; }
 };
 
 class Pawn : public Piece {
@@ -74,4 +80,5 @@ public:
 	vec2s* legalMoves(bool) override;
 	void losePower() { m_canDoubleMove = false; }
 	char textboardSymbol() override { return 'P'; }
+	PieceType getType() override { return pawn; }
 };

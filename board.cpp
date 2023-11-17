@@ -261,7 +261,7 @@ void Board::render() {
 	ImGui::Begin("Play window");
 	ImGui::Text(board_string.c_str());
 	ImGui::End();
-	
+
 	printBoardImage(); 
 }
 

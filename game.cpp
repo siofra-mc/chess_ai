@@ -2,6 +2,30 @@
 #include "piece.h"
 #include "imgui.h"
 
+uint8_t moveCount = 0;
+
+
+std::string moveAlgebraicForm(Color c, glm::ivec2 src, glm::ivec2 dest, PieceType type) {
+	std::string moveString;
+
+	switch (type) {
+	case king: moveString += "K"; break;
+	case queen: moveString += "Q"; break;
+	case bishop: moveString += "B"; break;
+	case knight: moveString += "N"; break;
+	case rook: moveString += "R"; break;
+	default: moveString += " "; break;
+	}
+
+	moveString += dest.x + 'a';
+	moveString += dest.y + '1';
+	
+	return moveString;
+}
+
+
+
+
 Game::Game(unsigned int fbo = 0) {
 	board = new Board(fbo);
 }
@@ -27,7 +51,7 @@ Game::~Game() {
 \*-------------------------------------------------------------------------------------------------------------*/
 
 
-
+   
 /*-------------------------------------------------------------------------------------------------------------*\
 * Game::render()
 * 
@@ -63,10 +87,30 @@ void Game::render() {
 			vec2s* legals = movedPiece->legalMoves(false);
 			glm::ivec2 attempt = { file,rank };
 			if (std::find(legals->begin(), legals->end(), attempt) != legals->end()) {
+				moveCount += 1;
+				moves.push_back(moveAlgebraicForm(movedPiece->getColor(), movedPiece->getPosition(), attempt, movedPiece->getType()));
 				board->makeLegalMove(movedPiece, attempt);
 			}
 			delete legals;
 		}
+	}
+	ImGui::End();
+
+	ImGui::Begin("history");
+	ImGui::ArrowButton("back", ImGuiDir_Left);
+	ImGui::SameLine();
+	ImGui::ArrowButton("next", ImGuiDir_Right);
+	for (int i = 0; i < moves.size(); i++) {
+		std::string moveStr = "";
+		if (i % 2 == 0) {
+			moveStr += i / 2 + '1';
+			moveStr += ". ";
+		}
+		else {
+			ImGui::SameLine();
+		}
+		moveStr += moves.at(i).c_str();
+		ImGui::Text(moveStr.c_str());
 	}
 	ImGui::End();
 
